@@ -1,6 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
-import router from '@/router'
 
 // 创建axios实例
 const request: AxiosInstance = axios.create({
@@ -13,7 +12,7 @@ const request: AxiosInstance = axios.create({
 
 // 请求拦截器
 request.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem('token')
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
@@ -38,7 +37,8 @@ request.interceptors.response.use(
         case 401:
           ElMessage.error('登录已过期，请重新登录')
           localStorage.removeItem('token')
-          router.push('/login')
+          // 使用 window.location 而不是 router 来避免循环依赖
+          window.location.href = '/login'
           break
         case 403:
           ElMessage.error('权限不足')

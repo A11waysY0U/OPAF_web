@@ -92,6 +92,7 @@ import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import { register } from '@/api/auth'
 import CloudflareTurnstile from '@/components/CloudflareTurnstile.vue'
+import config from '../../config.js'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -105,8 +106,8 @@ const loading = ref(false)
 // 人机验证token
 const authToken = ref('')
 
-// Cloudflare Turnstile站点密钥（需要替换为实际的密钥）
-const turnstileSiteKey = '0x4AAAAAABp1nO6DkYADuZXf'
+// Cloudflare Turnstile站点密钥
+const turnstileSiteKey = config.turnstile.siteKey
 
 // 注册表单
 const registerForm = reactive({
